@@ -10,7 +10,7 @@ namespace Template.Data.Extensions
     {
         public static ModelBuilder SeedData(this ModelBuilder builder)
         {
-            builder.Entity<User>().HasData(new User { Id = Guid.Parse("c7dce21b-d207-4869-bf5f-08eb138bb919"), Name="User Default", Email="userdefault@template.com" });
+            builder.Entity<User>().HasData(new User { Id = Guid.Parse("c7dce21b-d207-4869-bf5f-08eb138bb919"), Name="User Default", Email="userdefault@template.com", DateCreated = new DateTime(2021,8,20), DateUpdated = null, IsDeleted = false });
 
             return builder;
         }
