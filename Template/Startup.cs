@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Template.Application.AutoMapper;
 using Template.Data.Context;
 using Template.IoC;
+using Template.Swagger;
 
 namespace Template
 {
@@ -32,6 +33,7 @@ namespace Template
             NativeInjector.RegisterServices(services);
 
             services.AddAutoMapper(typeof(AutoMapperSetup));
+            services.AddSwaggerConfiguration();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -54,6 +56,8 @@ namespace Template
                 app.UseHsts();
             }
 
+
+            app.UseSwaggerConfiguration();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
