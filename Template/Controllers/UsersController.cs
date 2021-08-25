@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Template.Application.Interfaces;
+using Template.Application.ViewModels;
 
 namespace Template.Controllers
 {
@@ -27,5 +28,11 @@ namespace Template.Controllers
             return Ok(this.userService.Get());
         }
 
+
+        [HttpPost]
+        public IActionResult Post(UserViewModel userViewMOdel)
+        {
+            return Ok(this.userService.Post(userViewMOdel));
+        }
     }
 }
