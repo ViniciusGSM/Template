@@ -24,7 +24,7 @@ namespace Template.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            
+
             return Ok(this.userService.Get());
         }
 
@@ -33,6 +33,18 @@ namespace Template.Controllers
         public IActionResult Post(UserViewModel userViewMOdel)
         {
             return Ok(this.userService.Post(userViewMOdel));
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById (string id)
+        {
+            return Ok(this.userService.GetById(id));
+        }
+
+        [HttpPut]
+        public IActionResult Put(UserViewModel userViewMOdel)
+        {
+            return Ok(this.userService.Put(userViewMOdel));
         }
     }
 }
