@@ -1,16 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Template.Application.Interfaces;
 using Template.Application.ViewModels;
+using Template.Auth.Services;
 
 namespace Template.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class UsersController : ControllerBase
     {
 
@@ -29,7 +32,7 @@ namespace Template.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         public IActionResult Post(UserViewModel userViewMOdel)
         {
             return Ok(this.userService.Post(userViewMOdel));
@@ -47,10 +50,24 @@ namespace Template.Controllers
             return Ok(this.userService.Put(userViewMOdel));
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        //[HttpDelete("{id}")]
+        //public IActionResult Delete(string id)
+        //{
+        //    return Ok(this.userService.Delete(id));
+        //}
+        
+        [HttpDelete]
+        public IActionResult Delete()
         {
-            return Ok(this.userService.Delete(id));
+            string _userId = TokenService.GetValueFromClaim(HttpContext.User.Identity, ClaimTypes.NameIdentifier);
+            
+            return Ok(this.userService.Delete(_userId));
+        }
+
+        [HttpPost("authenticate"), AllowAnonymous]
+        public IActionResult Authenticate(UserAuthenticateRequestViewModel userViewModel)
+        {
+            return Ok(this.userService.Authenticate(userViewModel));
         }
     }
 }
