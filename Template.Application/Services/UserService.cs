@@ -39,8 +39,8 @@ namespace Template.Application.Services
             return _userViewModel;
         }
 
-        public bool Post(UserViewModel userViewModel)
-        {
+        //public bool Post(UserViewModel userViewModel)
+        //{
             //User _user = new User
             //{
             //    //Id = Guid.NewGuid(),
@@ -51,6 +51,10 @@ namespace Template.Application.Services
             //    //DateUpdated = null,               >>Depois que configuramos o AutoMapper, toda essa parte é automatizada.
             //    //IsDeleted = false
             //};
+        public bool Post(UserViewModel userViewModel)
+        {
+            if (userViewModel.Id != Guid.Empty)
+                throw new Exception("UserID must be empty!");
 
             User _user = mapper.Map<User>(userViewModel);
 
@@ -77,6 +81,9 @@ namespace Template.Application.Services
 
         public bool Put(UserViewModel userViewModel)
         {
+            if (userViewModel.Id == Guid.Empty)
+                throw new Exception("Id is invalid!");
+
             User _user = this.userRepository.Find(x => x.Id == userViewModel.Id && !x.IsDeleted);  //pegando o usuário pelo id e verificando que nao está deletado.
 
             if (_user == null)                                              // validando se não é um usuário nulo.
@@ -106,6 +113,9 @@ namespace Template.Application.Services
 
         public UserAuthenticateResponseViewModel Authenticate(UserAuthenticateRequestViewModel user)
         {
+            if (string.IsNullOrEmpty(user.Email))
+                throw new Exception("Email/Password are required!");
+
             User _user = this.userRepository.Find(x => !x.IsDeleted && x.Email.ToLower() == user.Email.ToLower());
             if (_user == null)
                 throw new Exception("User not found");
